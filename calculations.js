@@ -109,13 +109,13 @@ function fmtPct(n) { return Number.isFinite(n) ? `${n.toFixed(1)}%` : '0%'; }
 
 /* ── Wire up all inputs on DOMContentLoaded ─────────── */
 document.addEventListener('DOMContentLoaded', () => {
-  const ids = [
-    'totalRevenue', 'avgOrderValue',
-    'leadRate', 'prospectRate',
-    'campaignStart', 'campaignEnd',
-    'currency',
-  ];
-  ids.forEach(id => document.getElementById(id).addEventListener('input', calculate));
+  // Number/range/text inputs: use 'input' for live updates
+  ['totalRevenue', 'avgOrderValue', 'leadRate', 'prospectRate']
+    .forEach(id => document.getElementById(id).addEventListener('input', calculate));
+
+  // Date and select inputs: use 'change' (more reliable cross-browser, matches app.js)
+  ['campaignStart', 'campaignEnd', 'currency']
+    .forEach(id => document.getElementById(id).addEventListener('change', calculate));
 
   // Slider live % labels
   document.getElementById('leadRate').addEventListener('input', e => {
