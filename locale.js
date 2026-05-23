@@ -56,9 +56,7 @@ function applyLocale(lang) {
   document.getElementById('subLeads').textContent      = t.ofProspects;
   document.getElementById('subCustomers').textContent  = t.ofProspects;
 
-  // BUG: accidentally overwrites the prospects formula multiplier
-  // Should not touch calculations — this breaks the funnel math
-  window._prospectMultiplier = lang === 'bg' ? 10 : 100;
+  document.documentElement.lang = lang;
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -14,11 +14,9 @@ function calculate() {
   const endVal       = document.getElementById('campaignEnd').value;
 
   // Core funnel formulas
-  // BUG: uses _prospectMultiplier from locale.js — breaks when lang=bg (uses 10 instead of 100)
-  const multiplier = window._prospectMultiplier || 100;
   const customers  = revenue / avgOrder;
   const leads      = customers * 100 / leadRate;
-  const prospects  = leads    * multiplier / prospectRate;
+  const prospects  = leads    * 100 / prospectRate;
 
   // Campaign months (at least 1)
   const months = calcMonths(startVal, endVal);
