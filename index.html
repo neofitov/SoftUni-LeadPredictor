@@ -12,9 +12,10 @@
     <!-- Header -->
     <header class="header">
       <div class="logo">
-        <span class="logo-icon">&#9881;</span>
+        <span class="logo-icon">&#9673;</span>
         <span class="logo-text"><strong>Lead</strong>Predictor</span>
       </div>
+      <div class="header-meta" id="campaignMeta">Campaign: loading…</div>
     </header>
 
     <!-- Main layout -->
@@ -92,32 +93,35 @@
       <aside class="stats">
         <div class="stat-card" id="cardProspects">
           <div class="stat-header">
-            <span class="stat-icon">&#128193;</span>
+            <span class="stat-icon prospects-icon">&#128193;</span>
             <span class="stat-label">Prospects</span>
             <span class="stat-pct" id="pctProspects">100%</span>
           </div>
           <div class="stat-value" id="valProspects">125</div>
-          <div class="stat-bar"><div class="stat-bar-fill" id="barProspects" style="width:100%"></div></div>
+          <div class="stat-bar"><div class="stat-bar-fill prospects-bar" id="barProspects" style="width:100%"></div></div>
+          <div class="stat-sub" id="subProspects">of campaign total</div>
         </div>
 
         <div class="stat-card" id="cardLeads">
           <div class="stat-header">
-            <span class="stat-icon">&#128100;</span>
+            <span class="stat-icon leads-icon">&#128100;</span>
             <span class="stat-label">Leads</span>
             <span class="stat-pct" id="pctLeads">20%</span>
           </div>
           <div class="stat-value" id="valLeads">25</div>
-          <div class="stat-bar"><div class="stat-bar-fill" id="barLeads" style="width:20%"></div></div>
+          <div class="stat-bar"><div class="stat-bar-fill leads-bar" id="barLeads" style="width:20%"></div></div>
+          <div class="stat-sub" id="subLeads">of prospects</div>
         </div>
 
         <div class="stat-card" id="cardCustomers">
           <div class="stat-header">
-            <span class="stat-icon">&#127942;</span>
+            <span class="stat-icon customers-icon">&#127942;</span>
             <span class="stat-label">Customers</span>
             <span class="stat-pct" id="pctCustomers">8%</span>
           </div>
           <div class="stat-value" id="valCustomers">10</div>
-          <div class="stat-bar"><div class="stat-bar-fill" id="barCustomers" style="width:8%"></div></div>
+          <div class="stat-bar"><div class="stat-bar-fill customers-bar" id="barCustomers" style="width:8%"></div></div>
+          <div class="stat-sub" id="subCustomers">of prospects</div>
         </div>
       </aside>
 
