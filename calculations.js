@@ -36,16 +36,17 @@ function calculate() {
 function updateStatCards(prospects, leads, customers) {
   const leadsOfProspects     = prospects > 0 ? leads     / prospects * 100 : 0;
   const customersOfProspects = prospects > 0 ? customers / prospects * 100 : 0;
+  const hasProspects         = prospects > 0;
 
   document.getElementById('valProspects').textContent  = fmt(prospects);
   document.getElementById('valLeads').textContent      = fmt(leads);
   document.getElementById('valCustomers').textContent  = fmt(customers);
 
-  document.getElementById('pctProspects').textContent  = '100%';
+  document.getElementById('pctProspects').textContent  = hasProspects ? '100%' : '0%';
   document.getElementById('pctLeads').textContent      = fmtPct(leadsOfProspects);
   document.getElementById('pctCustomers').textContent  = fmtPct(customersOfProspects);
 
-  document.getElementById('barProspects').style.width  = '100%';
+  document.getElementById('barProspects').style.width  = hasProspects ? '100%' : '0%';
   document.getElementById('barLeads').style.width      = `${Math.min(100, leadsOfProspects).toFixed(1)}%`;
   document.getElementById('barCustomers').style.width  = `${Math.min(100, customersOfProspects).toFixed(1)}%`;
 }
@@ -65,21 +66,31 @@ function buildMonthlyData(prospects, leads, customers, months, startVal) {
   return data;
 }
 
-/* ── Campaign month count ───────────────────────────── */
+/* ── Parse date input as local date (avoids UTC timezone shift) ── */
+function parseLocalDate(val) {
+  if (!val) return null;
+  const [y, m, d] = val.split('-').map(Number);
+  if (!y || !m || !d) return null;
+  return new Date(y, m - 1, d);
+}
+
+/* ── Campaign month count (inclusive of end month) ──── */
 function calcMonths(startVal, endVal) {
   if (!startVal || !endVal) return 6;
-  const start = new Date(startVal);
-  const end   = new Date(endVal);
-  if (isNaN(start) || isNaN(end) || end <= start) return 1;
+  const start = parseLocalDate(startVal);
+  const end   = parseLocalDate(endVal);
+  if (!start || !end || end <= start) return 1;
+  // +1 to include the end month (e.g. May-Nov = 7 months, not 6)
   const months = (end.getFullYear() - start.getFullYear()) * 12
-               + (end.getMonth()    - start.getMonth());
+               + (end.getMonth()    - start.getMonth()) + 1;
   return Math.max(1, months);
 }
 
 /* ── Month label (e.g. "Jun 2026") ─────────────────── */
 function monthLabel(startVal, offset) {
   if (!startVal) return `Month #${offset}`;
-  const d = new Date(startVal);
+  const d = parseLocalDate(startVal);
+  if (!d) return `Month #${offset}`;
   d.setMonth(d.getMonth() + offset - 1);
   return d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
 }
