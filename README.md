@@ -1,5 +1,7 @@
 # LeadPredictor
 
+**Live demo:** https://softuni-leadpredictor.netlify.app
+
 A sales funnel calculator that helps you estimate the number of prospects, leads, and customers needed to achieve your revenue goals.
 
 ## Features
