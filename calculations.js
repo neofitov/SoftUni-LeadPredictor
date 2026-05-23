@@ -91,8 +91,11 @@ function monthLabel(startVal, offset) {
   if (!startVal) return `Month #${offset}`;
   const d = parseLocalDate(startVal);
   if (!d) return `Month #${offset}`;
-  d.setMonth(d.getMonth() + offset - 1);
-  return d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+  // Normalise to 1st to avoid day-of-month overflow (e.g. Jan 31 + 1 month = Mar)
+  const month = d.getMonth() + offset - 1;
+  const year  = d.getFullYear() + Math.floor(month / 12);
+  return new Date(year, ((month % 12) + 12) % 12, 1)
+    .toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
 }
 
 /* ── Currency symbol sync ───────────────────────────── */
