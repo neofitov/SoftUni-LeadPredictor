@@ -11,7 +11,7 @@ const COLORS = {
 
 /* ── Shared layout constants (used by _draw and hit-testing) */
 const PAD_LEFT   = 80;
-const PAD_RIGHT  = 24;
+const PAD_RIGHT  = 44;
 const PAD_TOP    = 16;
 const PAD_BOTTOM = 32;
 
@@ -103,13 +103,12 @@ function _draw() {
   const maxVal = Math.max(...chartData.map(d => Math.max(d.prospects, d.leads, d.customers)), 1);
   const scale  = chartW / (maxVal * 1.1);
 
-  // Grid lines
-  const gridSteps = 5;
+  // Grid lines — limit steps so labels don't overlap (min 70px per label)
+  const gridSteps = Math.min(6, Math.max(1, Math.floor(chartW / 70)));
   _ctx.strokeStyle = COLORS.grid;
   _ctx.lineWidth   = 1;
   _ctx.fillStyle   = COLORS.text;
   _ctx.font        = '11px Segoe UI, system-ui, sans-serif';
-  _ctx.textAlign   = 'center';
   for (let i = 0; i <= gridSteps; i++) {
     const val = Math.round(maxVal * 1.1 * i / gridSteps);
     const x   = PAD_LEFT + val * scale;
@@ -117,6 +116,8 @@ function _draw() {
     _ctx.moveTo(x, PAD_TOP);
     _ctx.lineTo(x, PAD_TOP + chartH);
     _ctx.stroke();
+    // Align first label left, last label right, rest centered — keeps text in-bounds
+    _ctx.textAlign = i === 0 ? 'left' : i === gridSteps ? 'right' : 'center';
     _ctx.fillText(`${val} people`, x, PAD_TOP + chartH + 18);
   }
 
