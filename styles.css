@@ -1,0 +1,203 @@
+/* ── Reset & base ─────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0f1623;
+  --panel:     #1a2235;
+  --card:      #1e2a3a;
+  --border:    #2a3a52;
+  --accent:    #4a9eff;
+  --accent2:   #6ab0ff;
+  --text:      #e0e8f0;
+  --muted:     #8899aa;
+  --bar-pros:  #4a6fa5;
+  --bar-leads: #5a85c0;
+  --bar-cust:  #3a5580;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 14px;
+  min-height: 100vh;
+}
+
+/* ── App shell ────────────────────────────────────── */
+.app { display: flex; flex-direction: column; height: 100vh; }
+
+/* ── Header ───────────────────────────────────────── */
+.header {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+}
+.logo { display: flex; align-items: center; gap: 8px; font-size: 20px; }
+.logo-icon { color: var(--accent); font-size: 22px; }
+.logo-text strong { color: var(--accent2); }
+
+/* ── Main layout ──────────────────────────────────── */
+.main {
+  display: grid;
+  grid-template-columns: 200px 1fr 220px;
+  gap: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Sidebar ──────────────────────────────────────── */
+.sidebar {
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
+
+.field select,
+.field input[type="date"],
+.field input[type="number"] {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 13px;
+  width: 100%;
+  outline: none;
+  transition: border-color .2s;
+}
+.field select:focus,
+.field input:focus { border-color: var(--accent); }
+
+.input-prefix {
+  display: flex;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.input-prefix span {
+  padding: 8px 8px 8px 10px;
+  color: var(--muted);
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.input-prefix input {
+  border: none;
+  border-radius: 0;
+  padding: 8px 10px 8px 0;
+  flex: 1;
+}
+
+/* ── Chart section ────────────────────────────────── */
+.chart-section {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.chart-container {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+}
+
+#chart { width: 100%; height: 100%; }
+
+/* ── Tooltip ──────────────────────────────────────── */
+.tooltip {
+  position: absolute;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 13px;
+  pointer-events: none;
+  line-height: 1.7;
+  box-shadow: 0 4px 16px rgba(0,0,0,.4);
+  white-space: nowrap;
+}
+.tooltip.hidden { display: none; }
+
+/* ── Sliders ──────────────────────────────────────── */
+.sliders { display: flex; flex-direction: column; gap: 14px; }
+
+.slider-field { display: flex; flex-direction: column; gap: 6px; }
+.slider-field label { color: var(--muted); font-size: 12px; }
+.slider-field input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  outline: none;
+}
+.slider-field input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(74,158,255,.5);
+}
+.slider-field span {
+  text-align: right;
+  color: var(--accent2);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ── Stats cards ──────────────────────────────────── */
+.stats {
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.stat-icon { font-size: 16px; }
+.stat-pct { margin-left: auto; color: var(--text); font-weight: 600; }
+
+.stat-value { font-size: 32px; font-weight: 700; color: var(--text); }
+
+.stat-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.stat-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width .4s ease;
+}
