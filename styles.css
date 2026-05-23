@@ -9,10 +9,10 @@
   --accent:    #4a9eff;
   --accent2:   #6ab0ff;
   --text:      #e0e8f0;
-  --muted:     #8899aa;
-  --bar-pros:  #4a6fa5;
-  --bar-leads: #5a85c0;
-  --bar-cust:  #3a5580;
+  --muted:            #8899aa;
+  --prospects-color:  #4a9eff;
+  --leads-color:      #a78bfa;
+  --customers-color:  #34d399;
 }
 
 body {
@@ -31,10 +31,14 @@ body {
   background: var(--panel);
   border-bottom: 1px solid var(--border);
   padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .logo { display: flex; align-items: center; gap: 8px; font-size: 20px; }
 .logo-icon { color: var(--accent); font-size: 22px; }
 .logo-text strong { color: var(--accent2); }
+.header-meta { font-size: 12px; color: var(--muted); }
 
 /* ── Main layout ──────────────────────────────────── */
 .main {
@@ -175,7 +179,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  transition: border-color .2s;
 }
+.stat-card:hover { border-color: var(--accent); }
 
 .stat-header {
   display: flex;
@@ -197,7 +203,19 @@ body {
 }
 .stat-bar-fill {
   height: 100%;
-  background: var(--accent);
   border-radius: 2px;
   transition: width .4s ease;
 }
+.prospects-bar { background: var(--prospects-color); }
+.leads-bar     { background: var(--leads-color); }
+.customers-bar { background: var(--customers-color); }
+
+.stat-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.prospects-icon { color: var(--prospects-color); }
+.leads-icon     { color: var(--leads-color); }
+.customers-icon { color: var(--customers-color); }
