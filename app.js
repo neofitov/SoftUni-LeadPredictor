@@ -95,8 +95,9 @@ function _draw() {
   const chartW    = W - PAD_LEFT - PAD_RIGHT;
   const chartH    = H - PAD_TOP  - PAD_BOTTOM;
   const rowH      = chartH / rows;
-  const barH      = Math.max(6, rowH * 0.22);
-  const gap       = barH * 0.5;
+  // Derive barH so all 3 bars + 2 gaps always fit within rowH (with 20% padding)
+  const gap       = rowH * 0.04;
+  const barH      = Math.max(2, (rowH * 0.8 - gap * 2) / 3);
 
   // Max value across all series for x-axis scale
   const maxVal = Math.max(...chartData.map(d => Math.max(d.prospects, d.leads, d.customers)), 1);
@@ -232,7 +233,13 @@ function initChart() {
 function updateChart(data) {
   if (!_chartReady) return;          // no-op until initChart() has run
   if (!Array.isArray(data)) return;  // defensive: reject non-array input
-  chartData     = data;
+  // Sanitize entries: coerce prospects/leads/customers to non-negative numbers
+  chartData = data.map(d => ({
+    label:     String(d.label ?? ''),
+    prospects: Math.max(0, Number(d.prospects) || 0),
+    leads:     Math.max(0, Number(d.leads)     || 0),
+    customers: Math.max(0, Number(d.customers) || 0),
+  }));
   _hoveredMonth = -1;
   _tooltip.classList.add('hidden');
   _draw();
