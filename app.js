@@ -11,7 +11,7 @@ const COLORS = {
 
 /* ── Shared layout constants (used by _draw and hit-testing) */
 const PAD_LEFT   = 80;
-const PAD_RIGHT  = 24;
+const PAD_RIGHT  = 44;
 const PAD_TOP    = 16;
 const PAD_BOTTOM = 32;
 
@@ -39,8 +39,10 @@ function updateCampaignMeta() {
   const end   = document.getElementById('campaignEnd').value;
   const el    = document.getElementById('campaignMeta');
   if (start && end) {
-    const fmt = d => new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-    el.textContent = `Campaign: ${fmt(start)} – ${fmt(end)}`;
+    const dateLocale = document.documentElement.lang === 'bg' ? 'bg-BG' : 'en-GB';
+    const fmt = d => new Date(d).toLocaleDateString(dateLocale, { day: '2-digit', month: 'short', year: 'numeric' });
+    const label = el.dataset.i18nCampaign || 'Campaign';
+    el.textContent = `${label}: ${fmt(start)} – ${fmt(end)}`;
   } else {
     el.textContent = '';
   }
@@ -103,13 +105,12 @@ function _draw() {
   const maxVal = Math.max(...chartData.map(d => Math.max(d.prospects, d.leads, d.customers)), 1);
   const scale  = chartW / (maxVal * 1.1);
 
-  // Grid lines
-  const gridSteps = 5;
+  // Grid lines — limit steps so labels don't overlap (min 70px per label)
+  const gridSteps = Math.min(6, Math.max(1, Math.floor(chartW / 70)));
   _ctx.strokeStyle = COLORS.grid;
   _ctx.lineWidth   = 1;
   _ctx.fillStyle   = COLORS.text;
   _ctx.font        = '11px Segoe UI, system-ui, sans-serif';
-  _ctx.textAlign   = 'center';
   for (let i = 0; i <= gridSteps; i++) {
     const val = Math.round(maxVal * 1.1 * i / gridSteps);
     const x   = PAD_LEFT + val * scale;
@@ -117,7 +118,10 @@ function _draw() {
     _ctx.moveTo(x, PAD_TOP);
     _ctx.lineTo(x, PAD_TOP + chartH);
     _ctx.stroke();
-    _ctx.fillText(`${val} people`, x, PAD_TOP + chartH + 18);
+    // Align first label left, last label right, rest centered — keeps text in-bounds
+    _ctx.textAlign = i === 0 ? 'left' : i === gridSteps ? 'right' : 'center';
+    const peopleLabel = _canvas.dataset.i18nPeople || 'people';
+    _ctx.fillText(`${val} ${peopleLabel}`, x, PAD_TOP + chartH + 18);
   }
 
   // Rows
