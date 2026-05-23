@@ -15,6 +15,8 @@ const TRANSLATIONS = {
     customers:      'Customers',
     ofCampaign:     'of campaign total',
     ofProspects:    'of prospects',
+    campaign:       'Campaign',
+    people:         'people',
   },
   bg: {
     language:       'Език',
@@ -30,6 +32,8 @@ const TRANSLATIONS = {
     customers:      'Клиенти',
     ofCampaign:     'от общото на кампанията',
     ofProspects:    'от потенциалните',
+    campaign:       'Кампания',
+    people:         'души',
   },
 };
 
@@ -37,13 +41,21 @@ function applyLocale(lang) {
   const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
   const appliedLang = TRANSLATIONS[lang] ? lang : 'en';
 
-  // Update all elements marked with data-i18n
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (t[key] !== undefined) el.textContent = t[key];
   });
 
+  // Expose dynamic labels as dataset attributes for JS-driven elements
+  const canvas = document.getElementById('chart');
+  if (canvas) canvas.dataset.i18nPeople = t.people;
+  const meta = document.getElementById('campaignMeta');
+  if (meta) meta.dataset.i18nCampaign = t.campaign;
+
   document.documentElement.lang = appliedLang;
+
+  // Re-render campaign meta so label and date locale update immediately
+  if (typeof updateCampaignMeta === 'function') updateCampaignMeta();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

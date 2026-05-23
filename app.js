@@ -39,8 +39,10 @@ function updateCampaignMeta() {
   const end   = document.getElementById('campaignEnd').value;
   const el    = document.getElementById('campaignMeta');
   if (start && end) {
-    const fmt = d => new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-    el.textContent = `Campaign: ${fmt(start)} – ${fmt(end)}`;
+    const dateLocale = document.documentElement.lang === 'bg' ? 'bg-BG' : 'en-GB';
+    const fmt = d => new Date(d).toLocaleDateString(dateLocale, { day: '2-digit', month: 'short', year: 'numeric' });
+    const label = el.dataset.i18nCampaign || 'Campaign';
+    el.textContent = `${label}: ${fmt(start)} – ${fmt(end)}`;
   } else {
     el.textContent = '';
   }
@@ -118,7 +120,8 @@ function _draw() {
     _ctx.stroke();
     // Align first label left, last label right, rest centered — keeps text in-bounds
     _ctx.textAlign = i === 0 ? 'left' : i === gridSteps ? 'right' : 'center';
-    _ctx.fillText(`${val} people`, x, PAD_TOP + chartH + 18);
+    const peopleLabel = _canvas.dataset.i18nPeople || 'people';
+    _ctx.fillText(`${val} ${peopleLabel}`, x, PAD_TOP + chartH + 18);
   }
 
   // Rows
